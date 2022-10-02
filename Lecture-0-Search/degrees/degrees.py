@@ -91,9 +91,36 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
+    print(f"source:{source}, target:{target}")
+    
+    que = QueueFrontier()
+    que.add(Node(source, None, None))
+    vis = set()
+    vis.add(source)
+    while not que.empty():
+        cur = que.remove()
+        neighbors = neighbors_for_person(cur.state)
+        for neighbor in neighbors:
+            movie_id, next_person_id = neighbor
 
-    # TODO
-    raise NotImplementedError
+            # find a solution
+            # 根据 parent 从底往上查找
+            if next_person_id == target:
+                path = [neighbor]
+                while cur.parent is not None:
+                    path.append(cur.action)
+                    cur = cur.parent
+                path.reverse()
+                print(f"Find target, path:{path}")
+                return path
+
+            # add node to que
+            # 如果下个 node 没来过，队列里也没有下个 node 的 id
+            if next_person_id not in vis and not que.contains_state(next_person_id):
+                vis.add(next_person_id)
+                que.add(Node(next_person_id, cur, neighbor))
+
+    return None
 
 
 def person_id_for_name(name):
