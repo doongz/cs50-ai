@@ -28,4 +28,9 @@
     - 当 X 做出行动时 `result(board, action)`，要去预测 O 的最优行为 `min_value(result(board, action))`，O 会基于 X 行动后的结果 `result(board, action)`，去预测 X 的最优行为 `max_value(result(board, action))`，因此算法实现上用「递归」实现
     - X 会根据当前 state 得到多个可能的 action，每个 action 会站在 O 的最优行为的基础上得到一个分数 `min_value(result(board, action))`，X 的当前最优行为就是在这些 action 对应的分数中，最大分数的那个 action `Actions[argmax(v)]`
     - 当前的 action 较多时，预测的速度会慢，如刚开始玩的前几步。可以通过 **Alpha-Beta Pruning 剪枝**。
-
+- [knights](./Lecture-1-Knowledge/knights/) 根据不同人说的话，判断他们的角色
+    - 实现起来很简单，**把人类的自然语言写成机器语言**，放入 knowledge 中即可
+    - 最有意思的代码是 `model_check(knowledge, query)` 和其中的 `check_all(knowledge, query, symbols, model)`，证明了基于已有的 knowledge，这个 query 是否正确
+    - model_check 中会生成所有的 symbols，check_all 每次会选择一个 symbol，基于这个 symbol 以类似回溯法的方式，在 model 中将这个 symbol 置为 true 或 false
+    - 当 symbols 消耗完，递归也就结束了，结束时判断基于 knowledge，query 在这个 model 下是否成立
+    - 本质上，**model_check 针对一条 query 生成了多个 symbols 的 true or false 的排列组合，也就是 model，在递归结束时，对 model 进行正确性判断**
