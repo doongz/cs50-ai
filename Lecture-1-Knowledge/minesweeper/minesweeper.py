@@ -89,6 +89,7 @@ class Sentence():
     Logical statement about a Minesweeper game
     A sentence consists of a set of board cells,
     and a count of the number of those cells which are mines.
+    like: {A, B, C} = 2
     """
 
     def __init__(self, cells, count):
@@ -105,27 +106,36 @@ class Sentence():
         """
         Returns the set of all cells in self.cells known to be mines.
         """
-        raise NotImplementedError
+        if len(self.cells) == self.count:
+            return self.cells
+        else:
+            return set()
 
     def known_safes(self):
         """
         Returns the set of all cells in self.cells known to be safe.
         """
-        raise NotImplementedError
+        if self.count == 0:
+            return self.cells
+        else:
+            return set()
 
     def mark_mine(self, cell):
         """
         Updates internal knowledge representation given the fact that
         a cell is known to be a mine.
         """
-        raise NotImplementedError
+        if cell in self.cells:
+            self.cells.remove(cell)
+            self.count -= 1
 
     def mark_safe(self, cell):
         """
         Updates internal knowledge representation given the fact that
         a cell is known to be safe.
         """
-        raise NotImplementedError
+        if cell in self.cells:
+            self.cells.remove(cell)
 
 
 class MinesweeperAI():
@@ -167,6 +177,72 @@ class MinesweeperAI():
         for sentence in self.knowledge:
             sentence.mark_safe(cell)
 
+    def conclude(self):
+        """
+        return the number of new clues that can be directly concluded 
+        from the sentences in AI's knowledge base, i.e. the number of 
+        cells in one sentence equals count or count == 0
+        """
+        # knowledge 更新后，是否有一些新的 cells 可以被推导出为 safe or mine
+        new_clue = 0
+        mine_cells = []  # 存储所有新得出的 mine cells
+        safe_cells = []  # 存储所有新得出的 safe cells
+        for sentence in self.knowledge:  # 检查 knowledge 中所有的 sentence
+            if sentence.known_mines():  # 如果这个 sentence 中的所有 cells 都是 mine
+                new_clue += 1
+                mine_cells += list(sentence.known_mines())
+            if sentence.known_safes():  # 如果这个 sentence 中的所有 cells 都是 safe
+                new_clue += 1
+                safe_cells += list(sentence.known_safes())
+        if len(mine_cells) > 0:
+            for cell in mine_cells:
+                self.mark_mine(cell)  # 添加到已知的 mine 中
+        if len(safe_cells) > 0:
+            for cell in safe_cells:
+                self.mark_safe(cell)  # 添加到已知的 safe 中
+        return new_clue
+
+    def infer(self):
+        """
+        return the number of new clues that can be inferred from 
+        AI's knowledge base, i.e. if set1 is a subset of set2, 
+        then we can construct the new sentence set2 - set1 = count2 - count1
+        """
+        # 根据已有的 knowledge，是否能添加一些新的 sentences 到 knowledge 中
+        new_clue = 0
+        new_knowledge = []  # 存储所有新得出的 sentences
+        for i in range(len(self.knowledge)):  # 当前的 sentence
+            for j in range(i + 1, len(self.knowledge)):  # 后面的 sentence
+                # 当当前的 sentence 和后面的任意 sentence 不一样时，就可能有新的 sentence 出现
+                if self.knowledge[i].cells < self.knowledge[j].cells:
+                    # 后面的 sentence 包含了当前的 sentence
+                    tmp = Sentence(self.knowledge[j].cells - self.knowledge[i].cells,
+                                   self.knowledge[j].count - self.knowledge[i].count)
+                    flag = True
+                    for s in self.knowledge:
+                        if tmp == s:  # 检查这个可能的 sentence 是否已知
+                            flag = False
+                            break
+                    if not flag:  # 已知的话就跳过
+                        continue
+                    new_clue += 1
+                    new_knowledge.append(tmp)  # 存储这个新的 sentence
+                elif self.knowledge[j].cells < self.knowledge[i].cells:
+                    # 如果当前的 sentence 包含了后面的 sentence
+                    tmp = Sentence(self.knowledge[i].cells - self.knowledge[j].cells,
+                                   self.knowledge[i].count - self.knowledge[j].count)
+                    flag = True
+                    for s in self.knowledge:
+                        if tmp == s:
+                            flag = False
+                            break
+                    if not flag:
+                        continue
+                    new_clue += 1
+                    new_knowledge.append(tmp)
+        self.knowledge += new_knowledge  # 将新得出的 sentences 添加到 knowledge 中
+        return new_clue
+
     def add_knowledge(self, cell, count):
         """
         Called when the Minesweeper board tells us, for a given
@@ -182,7 +258,33 @@ class MinesweeperAI():
             5) add any new sentences to the AI's knowledge base
                if they can be inferred from existing knowledge
         """
-        raise NotImplementedError
+        # 该方法会在 cell 已经执行后触发，且是 safe
+        self.moves_made.add(cell)  # 将 cell 添加至以走过的集合中
+        self.mark_safe(cell)  # 在所有的 sentence 更新这个已经安全的 cell
+        x, y = cell
+        neighbors = set()  # 记录这个 cell 周围可能走的 neighbor cell
+        for i in [-1, 0, 1]:
+            for j in [-1, 0, 1]:
+                if x+i < 0 or x+i >= self.height or y+j < 0 or y+j >= self.width or (i == j == 0):
+                    continue
+                neighbors.add((x + i, y + j))  # 先获取所有的 neighbors
+        neighbors = neighbors - self.safes  # 更新 neighbors 为未知的和已知有地雷的
+        neighbor_mines = len(neighbors & self.mines)  # 取 neighbors 中有地雷的 cells
+        neighbors = neighbors - self.mines  # 更新 neighbors 为未知的
+        # count 为该 cell 上数字，即 cell 周围可能的 mine 数量
+        # count - neighbor_mines 就是 cell 周围未知 cells 中，mines 的确切数量
+        # 在 knowledge 中记录点击这个 cell 后，新增加的 sentence
+        self.knowledge.append(Sentence(neighbors, count - neighbor_mines))
+
+        # 此时还需实现
+        # self.conclude(): knowledge 更新后，是否有一些新的 cells 可以被推导出为 safe or mine
+        # self.infer(): 根据已有的 knowledge，是否能添加一些新的 sentences 到 knowledge 中
+        while 1:
+            new_conclude = self.conclude()
+            new_infer = self.infer()
+            if new_conclude == new_infer == 0:
+                # 直到没有新的 cells 并且没有新的 sentences时，终止循环推导
+                break
 
     def make_safe_move(self):
         """
@@ -193,7 +295,10 @@ class MinesweeperAI():
         This function may use the knowledge in self.mines, self.safes
         and self.moves_made, but should not modify any of those values.
         """
-        raise NotImplementedError
+        safe_moves = self.safes - self.moves_made
+        if len(safe_moves) == 0:
+            return None
+        return list(safe_moves)[0]
 
     def make_random_move(self):
         """
@@ -202,4 +307,12 @@ class MinesweeperAI():
             1) have not already been chosen, and
             2) are not known to be mines
         """
-        raise NotImplementedError
+        possible_moves = set()
+        for i in range(self.width):
+            for j in range(self.height):
+                possible_moves.add((i, j))
+        possible_moves -= self.moves_made
+        possible_moves -= self.mines
+        if len(possible_moves) == 0:
+            return None
+        return list(possible_moves)[0]

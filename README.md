@@ -34,3 +34,11 @@
     - model_check 中会生成所有的 symbols，check_all 每次会选择一个 symbol，基于这个 symbol 以类似回溯法的方式，在 model 中将这个 symbol 置为 true 或 false
     - 当 symbols 消耗完，递归也就结束了，结束时判断基于 knowledge，query 在这个 model 下是否成立
     - 本质上，**model_check 针对一条 query 生成了多个 symbols 的 true or false 的排列组合，也就是 model，在递归结束时，对 model 进行正确性判断**
+- [minesweeper](./Lecture-1-Knowledge/minesweeper/) AI 玩扫雷
+    - 主要是实现 `def add_knowledge(self, cell, count):` 方法，难道非常大；
+    - **当我们做出行动后，需要基于此行动得出新的结论，将新的结论记录到我们的知识库中；而新的结论可能导致已有知识库的再次更新**，这就是这个 lab 学到的东西
+    - 该方法会在 cell 已经执行后触发，且是 safe，count 为该 cell 上数字，即 cell 周围可能的 mine 数量
+    - 会标记该 cell 已经走过；且是 safe 的；同时在 knowledge 中记录点击这个 cell 后，新增加的 sentence `Sentence(neighbors, count - neighbor_mines)`
+    - `self.conclude()`: knowledge 更新后，是否有一些新的 cells 可以被推导出为 safe or mine
+    - `self.infer()`: 根据已有的 knowledge，是否能添加一些新的 sentences 到 knowledge 中
+    - python 中的 set 还是很好用的
