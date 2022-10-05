@@ -42,3 +42,12 @@
     - `self.conclude()`: knowledge 更新后，是否有一些新的 cells 可以被推导出为 safe or mine
     - `self.infer()`: 根据已有的 knowledge，是否能添加一些新的 sentences 到 knowledge 中
     - python 中的 set 还是很好用的
+- [pagerank](./Lecture-2-Uncertainty/pagerank/) 统计每个页面的重要程度，应用于 google 展示搜索结果
+    - 实现两种算法，Random Surfer Model，Iterative Algorithm
+    - Random Surfer Model: `sample_pagerank(corpus, damping_factor, n)`
+        - 模拟从一个网页出发，按照已得出的概率往下去点击，重复 n 次，得出所有网页的 rank value
+        - 每次选择下个网页的概率是通过 `transition_model(corpus, page, damping_factor)` 提前算好的，即选择下个网页的概率是已知且不变的
+    - Iterative Algorithm: `iterate_pagerank(corpus, damping_factor)`
+        - **当前网页的 pagerank 是由之前的 pagerank 推导来的**，初始时刻每个网页为 1/n
+        - by sampling pages from a Markov Chain random surfer and by iteratively applying the PageRank formula.
+        - 当所有新老 pagerank 的差距小于 0.001 时，跳出迭代
