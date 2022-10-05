@@ -51,3 +51,11 @@
         - **当前网页的 pagerank 是由之前的 pagerank 推导来的**，初始时刻每个网页为 1/n
         - by sampling pages from a Markov Chain random surfer and by iteratively applying the PageRank formula.
         - 当所有新老 pagerank 的差距小于 0.001 时，跳出迭代
+- [heredity](./Lecture-2-Uncertainty/heredity/) 遗传场景下，用 AI 评估一个人具有特定基因特征的可能性
+    - 核心是实现函数 `joint_probability(people, one_gene, two_genes, have_trait)`，这个函数需要返回的是一个事件的联合概率
+    - one_gene, two_genes, have_trait 这三个参数描述了一个事件，是由函数调用处生成的人的各种组合
+    - `update(probabilities, one_gene, two_genes, have_trait, p)` 将上述生成的特定事件的联合概率，更新至全局概率统计中
+    - `normalize(probabilities)` 将全局概率统计标准化
+    - 难点是这个事件的联合概率如何得出，**一个事件由多个子场景组成，子场景对于这个事件的概率上的贡献是相乘得到的，这就是联合**
+    - 但是同一个子场景，可能会由多种条件都能得到，那这个子场景的概率是多个条件概率相加得到
+    - 同时，还需理清基因的继承关系和突变
