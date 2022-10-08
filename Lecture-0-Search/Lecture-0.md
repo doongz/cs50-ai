@@ -120,7 +120,7 @@ Repeat:
 
 
 
-#### [Depth-First Search](https://cs50.harvard.edu/ai/2020/notes/0/#depth-first-search)
+### [Depth-First Search](https://cs50.harvard.edu/ai/2020/notes/0/#depth-first-search)
 
 In the previous description of the *frontier*, one thing went unmentioned. At stage 1 in the pseudocode above, which node should be removed? This choice has implications on the quality of the solution and how fast it is achieved. There are multiple ways to go about the question of which nodes should be considered first, two of which can be represented by the data structures of **stack** (in *depth-first* search) and **queue** (in *breadth-first search*; and [here is a cute cartoon demonstration](https://www.youtube.com/watch?v=2wM6_PuBIxY) of the difference between the two).
 
@@ -154,7 +154,7 @@ Code example:
 
 
 
-#### [Breadth-First Search](https://cs50.harvard.edu/ai/2020/notes/0/#breadth-first-search)
+### [Breadth-First Search](https://cs50.harvard.edu/ai/2020/notes/0/#breadth-first-search)
 
 The opposite of *depth-first* search would be *breadth-first* search (*BFS*).
 
@@ -186,7 +186,7 @@ Code example:
 
 
 
-#### [Greedy Best-First Search](https://cs50.harvard.edu/ai/2020/notes/0/#greedy-best-first-search)
+### [Greedy Best-First Search](https://cs50.harvard.edu/ai/2020/notes/0/#greedy-best-first-search)
 
 Breadth-first and depth-first are both **uninformed** search algorithms. That is, these algorithms do not utilize any knowledge about the problem that they did not acquire through their own exploration. However, most often is the case that some knowledge about the problem is, in fact, available. For example, when a human maze-solver enters a junction, the human can see which way goes in the general direction of the solution and which way does not. AI can do the same. A type of algorithm that considers additional knowledge to try to improve its performance is called an **informed** search algorithm.
 
@@ -200,7 +200,7 @@ However, it is important to emphasize that, as with any heuristic, it can go wro
 
 
 
-#### [A* Search](https://cs50.harvard.edu/ai/2020/notes/0/#a-search)
+### [A* Search](https://cs50.harvard.edu/ai/2020/notes/0/#a-search)
 
 A development of the *greedy best-first* algorithm, *A\* search* considers not only *h(n)*, the estimated cost from the current location to the goal, but also *g(n)*, the cost that was accrued until the current location. By combining both these values, the algorithm has a more accurate way of determining the cost of the solution and optimizing its choices on the go. The algorithm keeps track of (*cost of path until now* + *estimated cost to the goal*), and once it exceeds the estimated cost of some previous option, the algorithm will ditch the current path and go back to the previous option, thus preventing itself from going down a long, inefficient path that *h(n)* erroneously marked as best.
 
@@ -211,13 +211,13 @@ Yet again, since this algorithm, too, relies on a heuristic, it is as good as th
 
 
 
-### [Adversarial Search](https://cs50.harvard.edu/ai/2020/notes/0/#adversarial-search)
+## [Adversarial Search](https://cs50.harvard.edu/ai/2020/notes/0/#adversarial-search)
 
 Whereas, previously, we have discussed algorithms that need to find an answer to a question, in **adversarial search** the algorithm faces an opponent that tries to achieve the opposite goal. Often, AI that uses adversarial search is encountered in games, such as tic tac toe.
 
 
 
-#### [Minimax](https://cs50.harvard.edu/ai/2020/notes/0/#minimax)
+### [Minimax](https://cs50.harvard.edu/ai/2020/notes/0/#minimax)
 
 A type of algorithm in adversarial search, **Minimax** represents winning conditions as (-1) for one side and (+1) for the other side. Further actions will be driven by these conditions, with the minimizing side trying to get the lowest score, and the maximizer trying to get the highest score.
 
@@ -281,7 +281,7 @@ To put it in pseudocode, the Minimax algorithm works the following way:
 
 
 
-#### [Alpha-Beta Pruning](https://cs50.harvard.edu/ai/2020/notes/0/#alpha-beta-pruning)
+### [Alpha-Beta Pruning](https://cs50.harvard.edu/ai/2020/notes/0/#alpha-beta-pruning)
 
 A way to optimize *Minimax*, **Alpha-Beta Pruning** skips some of the recursive computations that are decidedly unfavorable. After establishing the value of one action, if there is initial evidence that the following action can bring the opponent to get to a better score than the already established action, there is no need to further investigate this action because it will decidedly be less favorable than the previously established one.
 
@@ -291,7 +291,7 @@ This is most easily shown with an example: a maximizing player knows that, at th
 
 
 
-#### [Depth-Limited Minimax](https://cs50.harvard.edu/ai/2020/notes/0/#depth-limited-minimax)
+### [Depth-Limited Minimax](https://cs50.harvard.edu/ai/2020/notes/0/#depth-limited-minimax)
 
 There is a total of 255,168 possible Tic Tac Toe games, and 10²⁹⁰⁰⁰ possible games in Chess. The minimax algorithm, as presented so far, requires generating all hypothetical games from a certain point to the terminal condition. While computing all the Tic-Tac-Toe games doesn’t pose a challenge for a modern computer, doing so with chess is currently impossible.
 
