@@ -1,6 +1,6 @@
 # CS50’s Introduction to AI with Python
 
-## 课程简介
+## Introduction
 
 - 所属大学：Harvard
 - 先修要求：基本概率论 + Python基础
@@ -10,7 +10,7 @@
 
 一门非常基础的AI入门课，让人眼前一亮的是12个设计精巧的编程作业，都会用学到的AI知识去实现一个简易的游戏AI，比如用强化学习训练一个Nim游戏的AI，用alpha-beta剪枝去扫雷等等，非常适合新手入门或者大佬休闲。
 
-## 课程资源
+## Resources
 
 - 课程网站：https://cs50.harvard.edu/ai/2020/
 - 课程视频：https://cs50.harvard.edu/ai/2020/
@@ -18,7 +18,7 @@
 - 课程作业：https://cs50.harvard.edu/ai/2020/，12个精巧的编程作业
 - 实验参考：[PKUFlyingPig/cs50_ai - GitHub](https://github.com/PKUFlyingPig/cs50_ai)
 
-## 笔记
+## Notes
 
 - [Lecture 0 Search](./Lecture-0-Search/)
     - `Depth-First Search`  `Breadth-First Search`  `Greedy Best-First Search`  `A* Search`  `Minimax`  `Alpha-Beta Pruning`  `Depth-Limited Minimax`
@@ -28,10 +28,12 @@
     - `Probability`  `Conditional Probability`  `Random Variables`  `Bayes' Rule`  `Joint Probability`  `Probability Rules`  `Bayesian Networks`  `Sampling`  `Markov Models`  `Hidden Markov Models`
 - [Lecture 3 Optimization](./Lecture-3-Optimization/)
     - `Local Search`  `Hill Climbing`  `Simulated Annealing`  `Linear Programming`  `Constraint Satisfaction`  `Node Consistency`  `Arc Consistency`  `Backtracking Search`
-- [Lecture 4 Learning](./Lecture-4-Learning/)
-    - `Machine Learning`  `Supervised Learning`  `Nearest-Neighbor Classification`  `Perceptron Learning`  `Support Vector Machines`  `Regression`  `Loss Functions`  `Overfitting`  `Regularization`  `Reinforcement Learning`  `Markov Decision Processes`  `Q-Learning`  `Unsupervised Learning`  `k-means Clustering`
+- [Lecture 4 Learning](./Lecture-4-Learning/)  **`Machine Learning`**
+    - **`Supervised Learning`**  `Nearest-Neighbor Classification`  `Perceptron Learning`  `Support Vector Machines`  `Regression`  `Loss Functions`  `Overfitting`  `Regularization`  
+    - **`Reinforcement Learning`**  `Markov Decision Processes`  `Q-Learning`  
+    - **`Unsupervised Learning`**  `k-means Clustering`
 
-## 实验记录
+## Labs
 
 - [degress](./Lecture-0-Search/degrees/) 不同的演员通过主演的电影建立关系，求两个演员中的最短关系
     - 通过 **bfs 搜索** source 到 target 最短路径，找到 target 后，通过 node 的 parent 自下而上恢复出最短路径
@@ -73,3 +75,26 @@
     - 但是同一个子场景，可能会由多种条件都能得到，那这个子场景的概率是多个条件概率相加得到
     - 同时，还需理清基因的继承关系和突变
 - [crossword](./Lecture-3-Optimization/crossword/) 纵横填字游戏
+- [shopping](./Lecture-4-Learning/shopping/) 预测一个人购物的可能性
+    - `load_data` 加载数据
+    - `train_model` 选择 KNeighborsClassifier 模型
+    - `evaluate` 评价函数
+- [nim](./Lecture-4-Learning/nim/) 强化学习 Q-Learning 训练 AI 和自己玩 nim 游戏
+    - `class Nim()` 为游戏已给出，`class NimAI()` 为 AI 需要实现
+    - `def train(n)` AI 训练 n 轮，每轮游戏会重新开始，但是 AI 为同一个。在一轮游戏中，会走多步直到结束，每走一步都会更新 AI
+        - 若游戏结束：当前的 player 剩下最后一个，他输了，因此 reward 为 -1；另一个 player 基于 action 赢得比赛，因此 reward 为 1；
+        - 比赛继续进行：因此 reward 为 0，have some future reward
+    - 最核心的函数：`def update(self, old_state, action, new_state, reward)` 用来更新 Q value (其实等同于 reward)
+        - 该函数通过首先获取状态和动作，找到以前的 Q 值 `old = self.get_q_value(old_state, action)`
+        - 决定未来最好的回报 `best_future = self.best_future_reward(new_state)`
+        - 使用这两个值来更新 Q 值 `self.update_q_value(old_state, action, old, reward, best_future)`
+    - `def best_future_reward(self, state)` 返回的是下一步的最好 Q value
+    - `def update_q_value(self, state, action, old_q, reward, future_rewards)`  真正更新 Q value 的方法
+        - 公式：`Q(s, a) <- old value estimate + alpha * (new value estimate - old value estimate)`
+        - 说明：`old value estimate` is the previous Q-value, `alpha` is the learning rate, `new value estimate` is the sum of the current reward and estimated future rewards
+        - 实现：`self.q[(tuple(state), action)] = old_q + self.alpha * (reward + future_rewards - old_q)`
+    - `def choose_action(self, state, epsilon=True)` 基于当前 state 返回可执行的 action
+        - 若 `epsilon` is `False`，返回最好的 action，也就是基于 state 进行 action 可获得的最高的 Q value
+        - 若 `epsilon` is `True`，根据概率，选择一个 action
+        - 目的是，可以尝试其他行为，而不是用已知的最好 action（已知的最好并不是真的最好，还存在未知的情况）
+
