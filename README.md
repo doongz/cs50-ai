@@ -20,14 +20,16 @@
 
 ## 笔记
 
-- [Lecture 0 Search](./Lecture-0-Search)
+- [Lecture 0 Search](./Lecture-0-Search/)
     - `Depth-First Search`  `Breadth-First Search`  `Greedy Best-First Search`  `A* Search`  `Minimax`  `Alpha-Beta Pruning`  `Depth-Limited Minimax`
-- [Lecture 1 Knowledge](./Lecture-2-Knowledge)
+- [Lecture 1 Knowledge](./Lecture-2-Knowledge/)
     - `Propositional Logic`  `Inference`  `Knowledge Engineering`  `Inference Rules`  `Resolution`  `First Order Logic`
-- [Lecture 2 Uncertainty](./Lecture-2-Uncertainty)
+- [Lecture 2 Uncertainty](./Lecture-2-Uncertainty/)
     - `Probability`  `Conditional Probability`  `Random Variables`  `Bayes' Rule`  `Joint Probability`  `Probability Rules`  `Bayesian Networks`  `Sampling`  `Markov Models`  `Hidden Markov Models`
-- [Lecture 3 Optimization](./Lecture-3-Optimization)
+- [Lecture 3 Optimization](./Lecture-3-Optimization/)
     - `Local Search`  `Hill Climbing`  `Simulated Annealing`  `Linear Programming`  `Constraint Satisfaction`  `Node Consistency`  `Arc Consistency`  `Backtracking Search`
+- [Lecture 4 Learning](./Lecture-4-Learning/)
+    - `Machine Learning`  `Supervised Learning`  `Nearest-Neighbor Classification`  `Perceptron Learning`  `Support Vector Machines`  `Regression`  `Loss Functions`  `Overfitting`  `Regularization`  `Reinforcement Learning`  `Markov Decision Processes`  `Q-Learning`  `Unsupervised Learning`  `k-means Clustering`
 
 ## 实验记录
 
