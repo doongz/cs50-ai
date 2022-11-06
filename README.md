@@ -103,3 +103,5 @@
         - 目的是，可以尝试其他行为，而不是用已知的最好 action（已知的最好并不是真的最好，还存在未知的情况）
 - [traffic](./Lecture-5-Neural-Networks/traffic/) 用 tensorflow 写个识别交通标志的神经网络模型
 - [parser](./Lecture-6-Language/parser/) Write an AI to parse sentences and extract noun phrases.
+- [questions](./Lecture-6-Language/questions/) Write an AI to answer questions.
+    - 读取语料库，问问题，找到最相关的 document，最后找到最相关的 sentence。
