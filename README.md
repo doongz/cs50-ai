@@ -34,6 +34,8 @@
     - **`Unsupervised Learning`**  `k-means Clustering`
 - [Lecture 5 Neural Networks](./Lecture-5-Neural-Networks/)
     - `Neural Networks`  `Activation Functions`  `Neural Network Structure`  `Gradient Descent`  `Multilayer Neural Networks`  `Backpropagation`  `Overfitting`  `TensorFlow`  `Computer Vision`  `Image Convolution`  `Convolutional Neural Networks`  `Recurrent Neural Networks`
+- [Lecture 6 Language](./Lecture-6-Language/)
+    - `Natural Language Processing`  `Syntax and Semantics`  `Context-Free Grammar`  `nltk`  `n-grams`  `Tokenization`  `Markov Models`  `Bag-of-Words Model`  `Naive Bayes`  `Information Retrieval`  `tf-idf`  `Information Extraction`  `Word Net`  `Word Representation`  `word2vec`
 
 ## Labs
 
