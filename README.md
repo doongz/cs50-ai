@@ -3,6 +3,7 @@
 ## Introduction
 
 - 所属大学：Harvard
+- 授课老师：Brian Yu
 - 先修要求：基本概率论 + Python基础
 - 编程语言：Python
 - 课程难度：🌟🌟🌟
