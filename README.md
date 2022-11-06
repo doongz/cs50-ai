@@ -32,6 +32,8 @@
     - **`Supervised Learning`**  `Nearest-Neighbor Classification`  `Perceptron Learning`  `Support Vector Machines`  `Regression`  `Loss Functions`  `Overfitting`  `Regularization`  
     - **`Reinforcement Learning`**  `Markov Decision Processes`  `Q-Learning`  
     - **`Unsupervised Learning`**  `k-means Clustering`
+- [Lecture 5 Neural Networks](./Lecture-5-Neural-Networks/)
+    - `Neural Networks`  `Activation Functions`  `Neural Network Structure`  `Gradient Descent`  `Multilayer Neural Networks`  `Backpropagation`  `Overfitting`  `TensorFlow`  `Computer Vision`  `Image Convolution`  `Convolutional Neural Networks`  `Recurrent Neural Networks`
 
 ## Labs
 
@@ -90,7 +92,7 @@
         - 使用这两个值来更新 Q 值 `self.update_q_value(old_state, action, old, reward, best_future)`
     - `def best_future_reward(self, state)` 返回的是下一步的最好 Q value
     - `def update_q_value(self, state, action, old_q, reward, future_rewards)`  真正更新 Q value 的方法
-        - 公式：`Q(s, a) <- old value estimate + alpha * (new value estimate - old value estimate)`
+        - **公式：`Q(s, a) <- old value estimate + alpha * (new value estimate - old value estimate)`**
         - 说明：`old value estimate` is the previous Q-value, `alpha` is the learning rate, `new value estimate` is the sum of the current reward and estimated future rewards
         - 实现：`self.q[(tuple(state), action)] = old_q + self.alpha * (reward + future_rewards - old_q)`
     - `def choose_action(self, state, epsilon=True)` 基于当前 state 返回可执行的 action
